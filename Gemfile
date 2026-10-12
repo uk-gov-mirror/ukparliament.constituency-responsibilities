@@ -27,7 +27,7 @@ gem "lograge"
 gem "mcp"
 gem "csv"
 
-gem "json", "<3"
+gem "json", "<4"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
