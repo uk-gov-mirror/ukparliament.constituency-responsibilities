@@ -38,7 +38,7 @@ end
 
 transport = MCP::Server::Transports::StreamableHTTPTransport.new(
   server,
-  allowed_hosts: ["mcp.example.com"],
+  dns_rebinding_protection: false,
 )
 
 
