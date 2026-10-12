@@ -1,33 +1,69 @@
-# We establish a session
+## We establish a session
 SESSION_ID=$(curl -s -D - -o /dev/null http://localhost:3000/mcp \
 	-H "Accept: application/json, text/event-stream" \
 	--json '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-11-25","capabilities":{},"clientInfo":{"name":"curl","version":"1.0"}}}' \
 	| grep -i "^mcp-session-id:" | cut -d' ' -f2 | tr -d '\r')
 	
 
-# We check we're authenticated
+## We check we're authenticated
 curl -i http://localhost:3000/mcp \
 	-H "Accept: application/json, text/event-stream" \
 	-H "Mcp-Session-Id: $SESSION_ID" \
 	--json '{"jsonrpc":"2.0","method":"notifications/initialized"}'
 	
 
-# We list the tools
+## We list the tools
 curl http://localhost:3000/mcp \
 	-H "Accept: application/json, text/event-stream" \
 	-H "Mcp-Session-Id: $SESSION_ID" \
 	--json '{"jsonrpc":"2.0","id":2,"method":"tools/list"}'
 	
 
-# We list the current constituencies
+## We list the current constituencies
 curl -i http://localhost:3000/mcp \
 	 -H "Accept: application/json, text/event-stream" \
 	 -H "Mcp-Session-Id: $SESSION_ID" \
 	 --json '{"jsonrpc":"2.0","method":"tools/call","id":1,"params":{"name":"list_constituencies"}}'
 	 
 	 
-# We list the responsibilities
+## We list the responsibilities
 curl -i http://localhost:3000/mcp \
 	-H "Accept: application/json, text/event-stream" \
 	-H "Mcp-Session-Id: $SESSION_ID" \
 	--json '{"jsonrpc":"2.0","method":"tools/call","id":1,"params":{"name":"list_responsibilities"}}'
+	
+	
+	
+# LIVE
+
+## We establish a session
+SESSION_ID=$(curl -s -D - -o /dev/null https://constituency-responsibilities-15c1d9aa6ebb.herokuapp.com/mcp \
+	-H "Accept: application/json, text/event-stream" \
+	--json '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-11-25","capabilities":{},"clientInfo":{"name":"curl","version":"1.0"}}}' \
+	| grep -i "^mcp-session-id:" | cut -d' ' -f2 | tr -d '\r')
+	
+## We check we're authenticated
+curl -i https://constituency-responsibilities-15c1d9aa6ebb.herokuapp.com/mcp \
+	-H "Accept: application/json, text/event-stream" \
+	-H "Mcp-Session-Id: $SESSION_ID" \
+	--json '{"jsonrpc":"2.0","method":"notifications/initialized"}'
+	
+## We list the tools
+curl https://constituency-responsibilities-15c1d9aa6ebb.herokuapp.com/mcp \
+	-H "Accept: application/json, text/event-stream" \
+	-H "Mcp-Session-Id: $SESSION_ID" \
+	--json '{"jsonrpc":"2.0","id":2,"method":"tools/list"}'
+	
+## We list the current constituencies
+curl -i https://constituency-responsibilities-15c1d9aa6ebb.herokuapp.com/mcp \
+	 -H "Accept: application/json, text/event-stream" \
+	 -H "Mcp-Session-Id: $SESSION_ID" \
+	 --json '{"jsonrpc":"2.0","method":"tools/call","id":1,"params":{"name":"list_constituencies"}}'
+	
+ ## We list the responsibilities
+ curl -i https://constituency-responsibilities-15c1d9aa6ebb.herokuapp.com/mcp  \
+ 	-H "Accept: application/json, text/event-stream" \
+ 	-H "Mcp-Session-Id: $SESSION_ID" \
+ 	--json '{"jsonrpc":"2.0","method":"tools/call","id":1,"params":{"name":"list_responsibilities"}}'
+	
+	
