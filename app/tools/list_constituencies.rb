@@ -42,7 +42,7 @@ class ListConstituencies < MCP::Tool
       
       MCP::Tool::Response.new([{
         type: "json",
-        text: constituencies,
+        text: constituencies.to_json,
       }])
     end
   end
