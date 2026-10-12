@@ -36,7 +36,10 @@ server.resources_read_handler do |params|
   ]
 end
 
-transport = MCP::Server::Transports::StreamableHTTPTransport.new(server)
+transport = MCP::Server::Transports::StreamableHTTPTransport.new(
+  server,
+  dns_rebinding_protection: false,
+)
 
 
 

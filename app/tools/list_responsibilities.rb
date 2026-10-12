@@ -12,10 +12,15 @@ class ListResponsibilities < MCP::Tool
     def call
       responsibilities = Responsibility.all.order( 'label' )
       
-      MCP::Tool::Response.new([{
-        type: "json",
-        text: responsibilities,
-      }])
+      MCP::Tool::Response.new(
+        [
+          {
+            type: "json",
+            text: responsibilities.to_json,
+          }
+        ],
+        structured_content: responsibilities
+      )
     end
   end
 end
