@@ -15,7 +15,9 @@ class ListResponsibilities < MCP::Tool
       MCP::Tool::Response.new([{
         type: "json",
         text: responsibilities.to_json,
-      }])
+      }],
+        structured_content: responsibilities
+      )
     end
   end
 end
