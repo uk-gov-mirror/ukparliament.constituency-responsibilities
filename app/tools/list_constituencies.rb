@@ -46,8 +46,7 @@ class ListConstituencies < MCP::Tool
             type: "text",
             text: constituencies.to_json,
           }
-        ],
-        structured_content: constituencies
+        ]
       )
     end
   end

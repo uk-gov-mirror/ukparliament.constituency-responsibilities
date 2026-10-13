@@ -18,8 +18,7 @@ class ListResponsibilities < MCP::Tool
             type: "text",
             text: responsibilities.to_json,
           }
-        ],
-        structured_content: responsibilities
+        ]
       )
     end
   end

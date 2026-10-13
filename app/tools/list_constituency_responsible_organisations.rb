@@ -36,10 +36,14 @@ class ListConstituencyResponsibleOrganisations < MCP::Tool
           ", responsibility_label, constituency_name
         ]
       )
-      MCP::Tool::Response.new([{
-        type: "text",
-        text: organisation_responsibilities.to_json,
-      }])
+      MCP::Tool::Response.new(
+        [
+          {
+            type: "text",
+            text: organisation_responsibilities.to_json,
+          }
+        ]
+      )
     end
   end
 end
