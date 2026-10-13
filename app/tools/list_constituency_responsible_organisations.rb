@@ -5,8 +5,14 @@ class ListConstituencyResponsibleOrganisations < MCP::Tool
   description "A tool to list organisations having a given responsibility in a given constituency"
   input_schema(
     properties: {
-      constituency_name: { type: "string" },
-      responsibility_label: { type: "string" },
+      constituency_name: {
+        type: "string",
+        description:"The name of a current UK Parliament constituency"
+      },
+      responsibility_label: {
+        type: "string",
+        description:"The label for a responsibility, for example: Adult skills fund"
+      },
     },
     required: ["constituency_name", "responsibility_label"],
   )
