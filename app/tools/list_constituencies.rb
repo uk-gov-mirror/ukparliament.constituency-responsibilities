@@ -43,11 +43,10 @@ class ListConstituencies < MCP::Tool
       MCP::Tool::Response.new(
         [
           {
-            type: "json",
+            type: "text",
             text: constituencies.to_json,
           }
-        ],
-        structured_content: constituencies
+        ]
       )
     end
   end
