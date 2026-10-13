@@ -32,6 +32,12 @@ curl -i http://localhost:3000/mcp \
 	-H "Mcp-Session-Id: $SESSION_ID" \
 	--json '{"jsonrpc":"2.0","method":"tools/call","id":1,"params":{"name":"list_responsibilities"}}'
 	
+## We list organisations having a given responsibility in a given constituency
+curl -i http://localhost:3000/mcp \
+	-H "Accept: application/json, text/event-stream" \
+	-H "Mcp-Session-Id: $SESSION_ID" \
+	--json '{"jsonrpc":"2.0","method":"tools/call","id":1,"params":{"name":"list_constituency_responsible_organisations", "arguments":{"constituency_name":"Runnymede and Weybridge","responsibility_label":"Building regulations"}}}'
+	
 	
 	
 # LIVE
@@ -65,5 +71,11 @@ curl -i https://constituency-responsibilities-15c1d9aa6ebb.herokuapp.com/mcp \
  	-H "Accept: application/json, text/event-stream" \
  	-H "Mcp-Session-Id: $SESSION_ID" \
  	--json '{"jsonrpc":"2.0","method":"tools/call","id":1,"params":{"name":"list_responsibilities"}}'
+	
+## We list organisations having a given responsibility in a given constituency
+curl -i https://constituency-responsibilities-15c1d9aa6ebb.herokuapp.com/mcp \
+	-H "Accept: application/json, text/event-stream" \
+	-H "Mcp-Session-Id: $SESSION_ID" \
+	--json '{"jsonrpc":"2.0","method":"tools/call","id":1,"params":{"name":"list_constituency_responsible_organisations", "arguments":{"constituency_name":"Runnymede and Weybridge","responsibility_label":"Building regulations"}}}'
 	
 	

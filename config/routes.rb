@@ -13,7 +13,7 @@ server = MCP::Server.new(
   name: "constituency_responsibilities_server",
   title: "Constituency Responsibilities server",
   version: "1.0.0",
-  tools: [ListConstituencies,ListResponsibilities],
+  tools: [ListConstituencies,ListResponsibilities,ListConstituencyResponsibleOrganisations],
   resources: [
     MCP::Resource.new(
       uri: "example://rails/readme",
