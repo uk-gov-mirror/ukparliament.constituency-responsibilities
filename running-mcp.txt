@@ -1,3 +1,5 @@
+# Local
+
 ## We establish a session
 SESSION_ID=$(curl -s -D - -o /dev/null http://localhost:3000/mcp \
 	-H "Accept: application/json, text/event-stream" \
@@ -17,65 +19,168 @@ curl http://localhost:3000/mcp \
 	-H "Accept: application/json, text/event-stream" \
 	-H "Mcp-Session-Id: $SESSION_ID" \
 	--json '{"jsonrpc":"2.0","id":2,"method":"tools/list"}'
-	
 
-## We list the current constituencies
+## The tools
+
+### We list the current constituencies
 curl -i http://localhost:3000/mcp \
 	 -H "Accept: application/json, text/event-stream" \
 	 -H "Mcp-Session-Id: $SESSION_ID" \
-	 --json '{"jsonrpc":"2.0","method":"tools/call","id":1,"params":{"name":"list_constituencies"}}'
+	 --json '{"jsonrpc":"2.0","method":"tools/call","id":1,"params":{"name":"constituencies"}}'
 	 
+### We list constituency responsibilities in a given constituency
+curl -i http://localhost:3000/mcp \
+	 -H "Accept: application/json, text/event-stream" \
+	 -H "Mcp-Session-Id: $SESSION_ID" \
+	 --json '{"jsonrpc":"2.0","method":"tools/call","id":1,"params":{"name":"constituency_constituency_responsibilities", "arguments":{"constituency_name":"Aberdeenshire North and Moray East"}}}'
 	 
-## We list the responsibilities
+ ### We list constituency responsibilities for a given organisation in a given constituency
+curl -i http://localhost:3000/mcp \
+ 	-H "Accept: application/json, text/event-stream" \
+ 	-H "Mcp-Session-Id: $SESSION_ID" \
+ 	--json '{"jsonrpc":"2.0","method":"tools/call","id":1,"params":{"name":"constituency_constituency_responsibilities_for_organisation", "arguments":{"organisation_name":"Aberdeenshire Local Planning Authority","constituency_name":"Aberdeenshire North and Moray East"}}}'
+	
+### We list constituency responsibilities for a given responsibility in a given constituency
+curl -i http://localhost:3000/mcp \
+ 	-H "Accept: application/json, text/event-stream" \
+ 	-H "Mcp-Session-Id: $SESSION_ID" \
+ 	--json '{"jsonrpc":"2.0","method":"tools/call","id":1,"params":{"name":"constituency_constituency_responsibilities_for_responsibility", "arguments":{"constituency_name":"Runnymede and Weybridge","responsibility_label":"Building regulations"}}}'
+	
+### We list the responsibilities
 curl -i http://localhost:3000/mcp \
 	-H "Accept: application/json, text/event-stream" \
 	-H "Mcp-Session-Id: $SESSION_ID" \
-	--json '{"jsonrpc":"2.0","method":"tools/call","id":1,"params":{"name":"list_responsibilities"}}'
+	--json '{"jsonrpc":"2.0","method":"tools/call","id":1,"params":{"name":"responsibilities"}}'
 	
-## We list organisations having a given responsibility in a given constituency
+### We list constituency responsibilities for a given responsibility
+curl -i http://localhost:3000/mcp \
+ 	-H "Accept: application/json, text/event-stream" \
+ 	-H "Mcp-Session-Id: $SESSION_ID" \
+ 	--json '{"jsonrpc":"2.0","method":"tools/call","id":1,"params":{"name":"responsibility_constituency_responsibilities", "arguments":{"responsibility_label":"Building regulations"}}}'
+	
+### We list the organisation types
 curl -i http://localhost:3000/mcp \
 	-H "Accept: application/json, text/event-stream" \
 	-H "Mcp-Session-Id: $SESSION_ID" \
-	--json '{"jsonrpc":"2.0","method":"tools/call","id":1,"params":{"name":"list_constituency_responsible_organisations", "arguments":{"constituency_name":"Runnymede and Weybridge","responsibility_label":"Building regulations"}}}'
+	--json '{"jsonrpc":"2.0","method":"tools/call","id":1,"params":{"name":"organisation_types"}}'
+	
+### We list organisations by type
+curl -i http://localhost:3000/mcp \
+	-H "Accept: application/json, text/event-stream" \
+	-H "Mcp-Session-Id: $SESSION_ID" \
+	--json '{"jsonrpc":"2.0","method":"tools/call","id":1,"params":{"name":"organisation_type_organisations", "arguments":{"organisation_type_label":"Water company"}}}'
+	
+### We list the organisations
+curl -i http://localhost:3000/mcp \
+	-H "Accept: application/json, text/event-stream" \
+	-H "Mcp-Session-Id: $SESSION_ID" \
+	--json '{"jsonrpc":"2.0","method":"tools/call","id":1,"params":{"name":"organisations"}}'
+
+### We list constituency responsibilities for a given organisation
+curl -i http://localhost:3000/mcp \
+	-H "Accept: application/json, text/event-stream" \
+	-H "Mcp-Session-Id: $SESSION_ID" \
+	--json '{"jsonrpc":"2.0","method":"tools/call","id":1,"params":{"name":"organisation_constituency_responsibilities", "arguments":{"organisation_name":"Thames Water"}}}'
+	
+### We list constituency responsibilities for a given organisation and given responsibility
+curl -i http://localhost:3000/mcp \
+	-H "Accept: application/json, text/event-stream" \
+	-H "Mcp-Session-Id: $SESSION_ID" \
+	--json '{"jsonrpc":"2.0","method":"tools/call","id":1,"params":{"name":"organisation_constituency_responsibilities_for_responsibility", "arguments":{"organisation_name":"Thames Water","responsibility":"Sewerage"}}}'
 	
 	
 	
-# LIVE
+	
+	
+# Live on Heroku
 
 ## We establish a session
 SESSION_ID=$(curl -s -D - -o /dev/null https://constituency-responsibilities-15c1d9aa6ebb.herokuapp.com/mcp \
 	-H "Accept: application/json, text/event-stream" \
 	--json '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-11-25","capabilities":{},"clientInfo":{"name":"curl","version":"1.0"}}}' \
 	| grep -i "^mcp-session-id:" | cut -d' ' -f2 | tr -d '\r')
-	
+
+
 ## We check we're authenticated
 curl -i https://constituency-responsibilities-15c1d9aa6ebb.herokuapp.com/mcp \
 	-H "Accept: application/json, text/event-stream" \
 	-H "Mcp-Session-Id: $SESSION_ID" \
 	--json '{"jsonrpc":"2.0","method":"notifications/initialized"}'
-	
+
+
 ## We list the tools
 curl https://constituency-responsibilities-15c1d9aa6ebb.herokuapp.com/mcp \
 	-H "Accept: application/json, text/event-stream" \
 	-H "Mcp-Session-Id: $SESSION_ID" \
 	--json '{"jsonrpc":"2.0","id":2,"method":"tools/list"}'
-	
-## We list the current constituencies
+
+## The tools
+
+### We list the current constituencies
 curl -i https://constituency-responsibilities-15c1d9aa6ebb.herokuapp.com/mcp \
 	 -H "Accept: application/json, text/event-stream" \
 	 -H "Mcp-Session-Id: $SESSION_ID" \
-	 --json '{"jsonrpc":"2.0","method":"tools/call","id":1,"params":{"name":"list_constituencies"}}'
-	
- ## We list the responsibilities
- curl -i https://constituency-responsibilities-15c1d9aa6ebb.herokuapp.com/mcp  \
+	 --json '{"jsonrpc":"2.0","method":"tools/call","id":1,"params":{"name":"constituencies"}}'
+ 
+### We list constituency responsibilities in a given constituency
+curl -i https://constituency-responsibilities-15c1d9aa6ebb.herokuapp.com/mcp \
+	 -H "Accept: application/json, text/event-stream" \
+	 -H "Mcp-Session-Id: $SESSION_ID" \
+	 --json '{"jsonrpc":"2.0","method":"tools/call","id":1,"params":{"name":"constituency_constituency_responsibilities", "arguments":{"constituency_name":"Aberdeenshire North and Moray East"}}}'
+ 
+ ### We list constituency responsibilities for a given organisation in a given constituency
+curl -i https://constituency-responsibilities-15c1d9aa6ebb.herokuapp.com/mcp \
  	-H "Accept: application/json, text/event-stream" \
  	-H "Mcp-Session-Id: $SESSION_ID" \
- 	--json '{"jsonrpc":"2.0","method":"tools/call","id":1,"params":{"name":"list_responsibilities"}}'
-	
-## We list organisations having a given responsibility in a given constituency
+ 	--json '{"jsonrpc":"2.0","method":"tools/call","id":1,"params":{"name":"constituency_constituency_responsibilities_for_organisation", "arguments":{"organisation_name":"Aberdeenshire Local Planning Authority","constituency_name":"Aberdeenshire North and Moray East"}}}'
+
+### We list constituency responsibilities for a given responsibility in a given constituency
+curl -i https://constituency-responsibilities-15c1d9aa6ebb.herokuapp.com/mcp \
+ 	-H "Accept: application/json, text/event-stream" \
+ 	-H "Mcp-Session-Id: $SESSION_ID" \
+ 	--json '{"jsonrpc":"2.0","method":"tools/call","id":1,"params":{"name":"constituency_constituency_responsibilities_for_responsibility", "arguments":{"constituency_name":"Runnymede and Weybridge","responsibility_label":"Building regulations"}}}'
+
+### We list the responsibilities
 curl -i https://constituency-responsibilities-15c1d9aa6ebb.herokuapp.com/mcp \
 	-H "Accept: application/json, text/event-stream" \
 	-H "Mcp-Session-Id: $SESSION_ID" \
-	--json '{"jsonrpc":"2.0","method":"tools/call","id":1,"params":{"name":"list_constituency_responsible_organisations", "arguments":{"constituency_name":"Runnymede and Weybridge","responsibility_label":"Building regulations"}}}'
+	--json '{"jsonrpc":"2.0","method":"tools/call","id":1,"params":{"name":"responsibilities"}}'
+
+### We list constituency responsibilities for a given responsibility
+curl -i https://constituency-responsibilities-15c1d9aa6ebb.herokuapp.com/mcp \
+ 	-H "Accept: application/json, text/event-stream" \
+ 	-H "Mcp-Session-Id: $SESSION_ID" \
+ 	--json '{"jsonrpc":"2.0","method":"tools/call","id":1,"params":{"name":"responsibility_constituency_responsibilities", "arguments":{"responsibility_label":"Building regulations"}}}'
+
+### We list the organisation types
+curl -i https://constituency-responsibilities-15c1d9aa6ebb.herokuapp.com/mcp \
+	-H "Accept: application/json, text/event-stream" \
+	-H "Mcp-Session-Id: $SESSION_ID" \
+	--json '{"jsonrpc":"2.0","method":"tools/call","id":1,"params":{"name":"organisation_types"}}'
+
+### We list organisations by type
+curl -i https://constituency-responsibilities-15c1d9aa6ebb.herokuapp.com/mcp \
+	-H "Accept: application/json, text/event-stream" \
+	-H "Mcp-Session-Id: $SESSION_ID" \
+	--json '{"jsonrpc":"2.0","method":"tools/call","id":1,"params":{"name":"organisation_type_organisations", "arguments":{"organisation_type_label":"Water company"}}}'
+
+### We list the organisations
+curl -i https://constituency-responsibilities-15c1d9aa6ebb.herokuapp.com/mcp \
+	-H "Accept: application/json, text/event-stream" \
+	-H "Mcp-Session-Id: $SESSION_ID" \
+	--json '{"jsonrpc":"2.0","method":"tools/call","id":1,"params":{"name":"organisations"}}'
+
+### We list constituency responsibilities for a given organisation
+curl -i https://constituency-responsibilities-15c1d9aa6ebb.herokuapp.com/mcp \
+	-H "Accept: application/json, text/event-stream" \
+	-H "Mcp-Session-Id: $SESSION_ID" \
+	--json '{"jsonrpc":"2.0","method":"tools/call","id":1,"params":{"name":"organisation_constituency_responsibilities", "arguments":{"organisation_name":"Thames Water"}}}'
+
+### We list constituency responsibilities for a given organisation and given responsibility
+curl -i https://constituency-responsibilities-15c1d9aa6ebb.herokuapp.com/mcp \
+	-H "Accept: application/json, text/event-stream" \
+	-H "Mcp-Session-Id: $SESSION_ID" \
+	--json '{"jsonrpc":"2.0","method":"tools/call","id":1,"params":{"name":"organisation_constituency_responsibilities_for_responsibility", "arguments":{"organisation_name":"Thames Water","responsibility":"Sewerage"}}}'
 	
-	
+
+
