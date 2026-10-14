@@ -3,6 +3,7 @@
 	<head>
 		<%= render :partial => 'library_design/head/head' %>
 		<%= tag( 'base', :href => 'https://api.parliament.uk/constituency-responsibilities' )if Rails.env.production? %>
+		<%= tag( 'link', :rel => 'mcp', :href => '/mcp', :type=> "application/json+mcp", :title => "Model Context Protocol server for responsibilities in UK constituencies" ) %>
 	</head>
 	<body class="section-<%= @section %> subsection-<%= @subsection %> brand-commons">
 		<%= render 'layouts/header/header' %>
