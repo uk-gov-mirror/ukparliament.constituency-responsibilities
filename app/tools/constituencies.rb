@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ListConstituencies < MCP::Tool
+class Constituencies < MCP::Tool
   title "List constituencies"
   description "A tool to list current constituencies"
   input_schema(

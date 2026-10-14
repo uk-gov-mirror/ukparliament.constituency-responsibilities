@@ -1,29 +1,25 @@
 # frozen_string_literal: true
 
-class ListConstituencyResponsibleOrganisations < MCP::Tool
-  title "List constituency responsible organisations"
-  description "A tool to list organisations having a given responsibility in a given constituency"
+class ResponsibilityConstituencyResponsibilities < MCP::Tool
+  title "List constituency responsibilities for a responsibility"
+  description "A tool to list constituency responsibilities for a given responsibility"
   input_schema(
     properties: {
-      constituency_name: {
-        type: "string",
-        description:"The name of a current UK Parliament constituency"
-      },
       responsibility_label: {
         type: "string",
         description:"The label for a responsibility, for example: Adult skills fund"
       },
     },
-    required: ["constituency_name", "responsibility_label"],
+    required: ["responsibility_label"],
   )
 
   class << self
-    def call(constituency_name:, responsibility_label:)
+    def call( responsibility_label: )
       organisation_responsibilities = ConstituencyResponsibility.find_by_sql(
         [
           "
             SELECT
-              o.id,
+              ca.* AS constituency_name,
               o.label AS organisation_name,
               o.code AS organisation_code,
               caoo.constituency_area_population_overlap AS population_coverage_percent
@@ -36,10 +32,9 @@ class ListConstituencyResponsibleOrganisations < MCP::Tool
             WHERE cr.responsibility_id = r.id
             AND r.label = ?
             AND cr.constituency_area_id = ca.id
-            AND ca.name = ?
             AND cr.organisation_id = o.id
             AND cr.constituency_area_organisation_overlap_id = caoo.id
-          ", responsibility_label, constituency_name
+          ", responsibility_label
         ]
       )
       MCP::Tool::Response.new(

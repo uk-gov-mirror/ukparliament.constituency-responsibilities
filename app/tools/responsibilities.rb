@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ListResponsibilities < MCP::Tool
+class Responsibilities < MCP::Tool
   title "List responsibilities"
   description "A tool to list responsibilities"
   input_schema(
